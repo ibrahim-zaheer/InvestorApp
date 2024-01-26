@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../components/text_Editing_controllers.dart';
 import 'package:investorapp/widget/custom_text_field_widget.dart';
+import 'package:get/get.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({super.key});
@@ -10,6 +11,7 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
+  bool showProgressBar = false;
   // //personal info
   // TextEditingController _emailTextEditingController = TextEditingController();
 
@@ -420,6 +422,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 labelText: 'religion',
                 isHidden: false,
                 iconData: Icons.email_outlined,
+                // assetRef: "assets/images/logo.jpeg",
               ),
             ),
             Container(
@@ -432,6 +435,65 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 iconData: Icons.email_outlined,
               ),
             ),
+            SizedBox(
+              height: 20,
+            ),
+            //login button
+            Container(
+              height: 50,
+              width: MediaQuery.of(context).size.width - 36,
+              decoration: const BoxDecoration(
+                  color: Colors.blueAccent,
+                  borderRadius: BorderRadius.all(Radius.circular(12))),
+              child: InkWell(
+                onTap: () {},
+                child: const Center(
+                  child: Text(
+                    "Create an Account",
+                    style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Already have an account',
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                ),
+                Container(
+                  height: 50,
+                  width: MediaQuery.of(context).size.width - 36,
+                  decoration: const BoxDecoration(
+                      color: Colors.blueAccent,
+                      borderRadius: BorderRadius.all(Radius.circular(12))),
+                  child: InkWell(
+                    onTap: () {
+                      //for going to previos screen
+                      Get.back();
+                    },
+                    child: const Center(
+                      child: Text(
+                        'Login Here',
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.pink),
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+            showProgressBar == true
+                ? CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.orange),
+                  )
+                : Container()
           ],
         ),
       ),
