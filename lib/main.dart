@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:investorapp/authenticationscreen/login_screen.dart';
+import 'package:investorapp/controllers/authentication_controller.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  Get.put(AuthenticatorController());
   runApp(MyAPP());
 }
 

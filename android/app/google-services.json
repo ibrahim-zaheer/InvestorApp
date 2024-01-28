@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "540099191662",
+    "project_id": "investor-9bc34",
+    "storage_bucket": "investor-9bc34.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:540099191662:android:207fc89f1fcf5c1522577f",
+        "android_client_info": {
+          "package_name": "com.example.investorapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWWNXrW6C01G8StDVp1KJfZ0kU97jmkcQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

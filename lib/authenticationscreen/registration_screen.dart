@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:investorapp/controllers/authentication_controller.dart';
 import '../components/text_Editing_controllers.dart';
 import 'package:investorapp/widget/custom_text_field_widget.dart';
 import 'package:get/get.dart';
@@ -12,6 +15,7 @@ class RegistrationScreen extends StatefulWidget {
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
   bool showProgressBar = false;
+  var authController = AuthenticatorController.authenticatorController;
   // //personal info
   // TextEditingController _emailTextEditingController = TextEditingController();
 
@@ -107,14 +111,56 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               height: 10,
             ),
             //Choose Image for profile
-            GestureDetector(
-              onTap: () {},
-              child: const CircleAvatar(
-                radius: 80,
-                backgroundImage: AssetImage("assets/images/logo.jpeg"),
-                backgroundColor: Colors.black,
-              ),
+            authController.ImageFIle == null
+                ? const CircleAvatar(
+                    radius: 80,
+                    backgroundImage: AssetImage("assets/images/logo.jpeg"),
+                    backgroundColor: Colors.black,
+                  )
+                : Container(
+                    width: 100,
+                    height: 100,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.grey,
+                      image: DecorationImage(
+                          fit: BoxFit.fitHeight,
+                          image: FileImage(File(
+                            authController.ImageFIle!.path,
+                          ))),
+                    ),
+                  ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                    onPressed: () async {
+                      await authController.pickImageFileFromGallery();
+                      setState(() {
+                        authController.ImageFIle;
+                      });
+                    },
+                    icon: const Icon(
+                      Icons.image_outlined,
+                      color: Colors.grey,
+                    )),
+                const SizedBox(
+                  height: 30,
+                ),
+                IconButton(
+                    onPressed: () async {
+                      await authController.captureImageFileFromCamera();
+                      setState(() {
+                        authController.ImageFIle;
+                      });
+                    },
+                    icon: const Icon(
+                      Icons.camera_alt_outlined,
+                      color: Colors.grey,
+                    ))
+              ],
             ),
+
             const SizedBox(
               height: 30,
             ),
@@ -478,7 +524,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     },
                     child: const Center(
                       child: Text(
-                        'Login Here',
+                        'Click Here',
                         style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
