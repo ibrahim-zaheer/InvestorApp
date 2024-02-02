@@ -257,8 +257,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               height: 50,
               width: MediaQuery.of(context).size.width - 36,
               child: CustomTextFieldWidget(
-                editingController: usercontrollers.phoneNumber,
-                labelText: 'Phone Number',
+                editingController: usercontrollers.password,
+                labelText: 'PassWord',
                 isHidden: false,
                 iconData: Icons.email_outlined,
               ),
@@ -492,7 +492,58 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   color: Colors.blueAccent,
                   borderRadius: BorderRadius.all(Radius.circular(12))),
               child: InkWell(
-                onTap: () {},
+                onTap: () async {
+                  if (authController.ImageFIle != null) {
+                    if (usercontrollers.name.text.trim().isNotEmpty &&
+                        usercontrollers.email.text.trim().isNotEmpty &&
+                        usercontrollers.password.text.trim().isNotEmpty) {
+                      setState(() {
+                        showProgressBar = true;
+                      });
+                      await authController.createNewUserAccount(
+                          usercontrollers.email.text.trim(),
+                          authController.profileImage!,
+                          usercontrollers.name.text.trim(),
+                          usercontrollers.phoneNumber.text.trim(),
+                          usercontrollers.password.text.trim(),
+                          usercontrollers.age.text.trim(),
+                          usercontrollers.city.text.trim(),
+                          usercontrollers.country.text.trim(),
+                          usercontrollers.lookingForInAPartner.text.trim(),
+                          usercontrollers.ProfileHeading.text.trim(),
+                          // DateTime.now(),
+                          usercontrollers.height.text.trim(),
+                          usercontrollers.weight.text.trim(),
+                          usercontrollers.bodyType.text.trim(),
+                          usercontrollers.drink.text.trim(),
+                          usercontrollers.smoke.text.trim(),
+                          usercontrollers.maritalStatus.text.trim(),
+                          usercontrollers.haveChildren.text.trim(),
+                          usercontrollers.numberOfChildren.text.trim(),
+                          usercontrollers.profession.text.trim(),
+                          usercontrollers.income.text.trim(),
+                          usercontrollers.livingSituation.text.trim(),
+                          usercontrollers.willingToRelocate.text.trim(),
+                          usercontrollers.relationshipYouAreLookingFor.text
+                              .trim(),
+                          usercontrollers.nationality.text.trim(),
+                          usercontrollers.education.text.trim(),
+                          usercontrollers.language.text.trim(),
+                          usercontrollers.religion.text.trim(),
+                          usercontrollers.ethnicity.text.trim());
+
+                      setState(() {
+                        showProgressBar = false;
+                      });
+                    } else {
+                      Get.snackbar(
+                          "A field is Missing", "Please enter the field again");
+                    }
+                  } else {
+                    Get.snackbar(
+                        "Image is Missing", "Please select the image again");
+                  }
+                },
                 child: const Center(
                   child: Text(
                     "Create an Account",
