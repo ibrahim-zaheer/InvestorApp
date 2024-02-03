@@ -87,11 +87,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:investorapp/authenticationscreen/login_screen.dart';
 import 'package:investorapp/homseScreen/home_screen.dart';
 import 'package:investorapp/models/person.dart' as personModel;
 
 class AuthenticatorController extends GetxController {
   static AuthenticatorController authenticatorController = Get.find();
+  late Rx<User?> firebaseCurrentUser;
   late Rx<File?> pickedFile;
   File? get profileImage => pickedFile.value;
   XFile? ImageFIle;
@@ -205,5 +207,37 @@ class AuthenticatorController extends GetxController {
     } catch (error) {
       Get.snackbar("Account Creation error", "Error Occurred: $error");
     }
+  }
+
+  loginUser(String EmailUser, String PasswordUser) async {
+    try {
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: EmailUser, password: PasswordUser);
+
+      Get.snackbar("Logged in Successfully", "your logged in successfully");
+      Get.to(HomeScreen());
+    } catch (error) {
+      Get.snackbar("Error", error.toString());
+    }
+  }
+
+  //User? is the class you get from firebase authentication
+  checkIfUseLoggedIn(User? currentUSer) {
+    // it means user is not logged in or has sign out
+    if (currentUSer == null) {
+      Get.to(LoginScreen());
+    }
+    //it means user is logged in or has already signed in
+    else {
+      Get.to(HomeScreen());
+    }
+  }
+
+  @override
+  void onReady() {
+    super.onReady();
+    firebaseCurrentUser = Rx<User?>(FirebaseAuth.instance.currentUser);
+    firebaseCurrentUser.bindStream(FirebaseAuth.instance.authStateChanges());
+    ever(firebaseCurrentUser, checkIfUseLoggedIn);
   }
 }

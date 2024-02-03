@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:investorapp/authenticationscreen/registration_screen.dart';
+import 'package:investorapp/controllers/authentication_controller.dart';
 import 'package:investorapp/widget/custom_text_field_widget.dart';
 import '../components/text_Editing_controllers.dart';
 
@@ -18,6 +19,8 @@ class _LoginScreenState extends State<LoginScreen> {
       TextEditingController();
 
   bool showProgressBar = false;
+  AuthenticatorController authenticatorController =
+      new AuthenticatorController();
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +83,22 @@ class _LoginScreenState extends State<LoginScreen> {
                     color: Colors.blueAccent,
                     borderRadius: BorderRadius.all(Radius.circular(12))),
                 child: InkWell(
-                  onTap: () {},
+                  onTap: () async {
+                    if (_emailTextEditingController.text.trim().isNotEmpty &&
+                        _passwordTextEditingController.text.trim().isNotEmpty) {
+                      setState(() {
+                        showProgressBar = true;
+                      });
+                      await authenticatorController.loginUser(
+                          _emailTextEditingController.text.trim(),
+                          _passwordTextEditingController.text.trim());
+                      setState(() {
+                        showProgressBar = false;
+                      });
+                    } else {
+                      Get.snackbar("Field Empty", "Please Fill All The Field");
+                    }
+                  },
                   child: const Center(
                     child: Text(
                       "Login",
