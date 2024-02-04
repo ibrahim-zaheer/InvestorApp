@@ -23,13 +23,56 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text(
-          'Welcome',
-          style: TextStyle(fontSize: 20, color: Colors.green),
+    return Scaffold(
+        bottomNavigationBar: BottomNavigationBar(
+          onTap: (indexNumber) {
+            setState(() {
+              screenIndex = indexNumber;
+            });
+          },
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: Colors.black,
+          selectedItemColor: Colors.white,
+          unselectedItemColor: Colors.white12,
+          currentIndex: screenIndex,
+          items: const [
+            //  SwippingScreen(),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.home,
+                  size: 30,
+                ),
+                label: ""),
+            // ViewSentViewRecievedScreen(),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.remove_red_eye,
+                  size: 30,
+                ),
+                label: ""),
+            // FavouriteSentFavouriteRecievedScreen(),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.star,
+                  size: 30,
+                ),
+                label: ""),
+            // LikeSentLikeRecievedScreen(),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.favorite,
+                  size: 30,
+                ),
+                label: ""),
+            // UserDetailScreen(),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.person,
+                  size: 30,
+                ),
+                label: ""),
+          ],
         ),
-      ),
-    );
+        body: tabScreenList[screenIndex]);
   }
 }

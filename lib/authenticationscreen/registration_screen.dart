@@ -534,6 +534,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
                       setState(() {
                         showProgressBar = false;
+                        // use this when you logout or want to create new profile and want the default image to appear not the previous selected one
+                        authController.ImageFIle = null;
                       });
                     } else {
                       Get.snackbar(

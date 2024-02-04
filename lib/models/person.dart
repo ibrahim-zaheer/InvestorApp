@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:investorapp/models/rough.dart';
 
 class Person {
+  String? uid;
   String? email;
   String? imageProfile;
   String? name;
@@ -39,6 +40,7 @@ class Person {
   String? ethnicity;
 
   Person({
+    this.uid,
     this.email,
     this.imageProfile,
     this.name,
@@ -80,6 +82,7 @@ class Person {
     //when we recieve data from firestore, we store it in this form
     var dataSnapshot = snapshot.data() as Map<String, dynamic>;
     return Person(
+      uid: dataSnapshot['uid'],
       name: dataSnapshot['name'],
       imageProfile: dataSnapshot['imageProfile'],
       email: dataSnapshot['email'],
@@ -120,7 +123,7 @@ class Person {
 
   Map<String, dynamic> toJson() => {
         // Personal Information
-
+        'uid': uid,
         'name': name,
         'imageProfile': imageProfile,
         'email': email,

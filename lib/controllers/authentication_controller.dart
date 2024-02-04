@@ -164,6 +164,7 @@ class AuthenticatorController extends GetxController {
       String downloadUrlOfImage = await uploadImageToStorage(imageProfile);
       // saving user info to firestore
       personModel.Person personInstance = personModel.Person(
+          uid: FirebaseAuth.instance.currentUser!.uid,
           imageProfile: downloadUrlOfImage,
           email: email,
           name: name,
