@@ -75,15 +75,145 @@ class _SwippingScreenState extends State<SwippingScreen> {
               final eachProfileInfo =
                   profileController.getAllUsersProfileList[index];
               return DecoratedBox(
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: NetworkImage(
-                      eachProfileInfo.imageProfile.toString(),
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage(
+                        eachProfileInfo.imageProfile.toString(),
+                      ),
+                      fit: BoxFit.cover,
                     ),
-                    fit: BoxFit.cover,
                   ),
-                ),
-              );
+                  //we write this code to allow a icon appear on top right side of the image
+                  child: Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: Column(children: [
+                      //Filter icon button
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: Padding(
+                          padding: EdgeInsets.only(top: 8),
+                          child: IconButton(
+                              onPressed: () {},
+                              icon: const Icon(
+                                Icons.filter_list,
+                                size: 30,
+                              )),
+                        ),
+                      )
+                      // viewing user data by clicking on it
+                      ,
+                      GestureDetector(
+                        onTap: () {},
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              //name
+                              Text(
+                                eachProfileInfo.name.toString(),
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 24,
+                                    letterSpacing: 4,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              //age and city
+                              Text(
+                                "${eachProfileInfo.age.toString()} ⦿ ${eachProfileInfo.city.toString()}",
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  letterSpacing: 4,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 4,
+                              ),
+                              // we are writing this for styling
+                              Row(
+                                //to make the widget in childern appear in center, use mainAxisAlignment
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  //profession
+                                  ElevatedButton(
+                                    onPressed: () {},
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.white30,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(16)),
+                                    ),
+                                    child: Text(
+                                      eachProfileInfo.profession.toString(),
+                                      style: const TextStyle(
+                                          color: Colors.white, fontSize: 14),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 6,
+                                  ),
+                                  //religion
+                                  ElevatedButton(
+                                    onPressed: () {},
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.white30,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(16)),
+                                    ),
+                                    child: Text(
+                                      eachProfileInfo.religion.toString(),
+                                      style: const TextStyle(
+                                          color: Colors.white, fontSize: 14),
+                                    ),
+                                  )
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 4,
+                              ),
+                              Row(
+                                //to make the widget in childern appear in center, use mainAxisAlignment
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  //country
+                                  ElevatedButton(
+                                    onPressed: () {},
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.white30,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(16)),
+                                    ),
+                                    child: Text(
+                                      eachProfileInfo.country.toString(),
+                                      style: const TextStyle(
+                                          color: Colors.white, fontSize: 14),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 6,
+                                  ),
+                                  //ethnicity
+                                  ElevatedButton(
+                                    onPressed: () {},
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.white30,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(16)),
+                                    ),
+                                    child: Text(
+                                      eachProfileInfo.ethnicity.toString(),
+                                      style: const TextStyle(
+                                          color: Colors.white, fontSize: 14),
+                                    ),
+                                  )
+                                ],
+                              )
+                            ]),
+                      )
+                    ]),
+                  ));
             },
           );
         },
