@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:investorapp/tabScreens/favourite_sent_favourite_recieved_screen.dart';
 import 'package:investorapp/tabScreens/like_sent_like_recieved_screen.dart';
@@ -19,7 +20,9 @@ class _HomeScreenState extends State<HomeScreen> {
     ViewSentViewRecievedScreen(), //2nd index
     FavouriteSentFavouriteRecievedScreen(), //3rd index and so on
     LikeSentLikeRecievedScreen(),
-    UserDetailScreen(),
+    UserDetailScreen(
+      userID: FirebaseAuth.instance.currentUser!.uid,
+    ),
   ];
   @override
   Widget build(BuildContext context) {

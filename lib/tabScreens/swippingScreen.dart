@@ -102,6 +102,8 @@ class _SwippingScreenState extends State<SwippingScreen> {
                       )
                       // viewing user data by clicking on it
                       ,
+                      //we write this to move the data to bottom of the image
+                      const Spacer(),
                       GestureDetector(
                         onTap: () {},
                         child: Column(
@@ -206,6 +208,40 @@ class _SwippingScreenState extends State<SwippingScreen> {
                                       eachProfileInfo.ethnicity.toString(),
                                       style: const TextStyle(
                                           color: Colors.white, fontSize: 14),
+                                    ),
+                                  )
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 14,
+                              ),
+                              //image button - favourite - chat - live
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  // heart shape
+                                  GestureDetector(
+                                    onTap: () {},
+                                    child: Image.asset(
+                                      "assets/images/heart.png",
+                                      width: 50,
+                                    ),
+                                  ),
+                                  //chat shape
+                                  GestureDetector(
+                                    onTap: () {},
+                                    child: Image.asset(
+                                      "assets/images/chat.png",
+                                      width: 50,
+                                    ),
+                                  ),
+                                  //star shape
+                                  GestureDetector(
+                                    onTap: () {},
+                                    child: Image.asset(
+                                      "assets/images/star.png",
+                                      width: 50,
                                     ),
                                   )
                                 ],
