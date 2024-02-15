@@ -18,7 +18,7 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
   // String imageProfile = "";
   String name = "";
   String phoneNumber = "";
-  String age = "";
+  String ages = "";
   String city = "";
   String country = "";
   String lookingForInAPartner = "";
@@ -80,7 +80,7 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
           phoneNumber = snapshot.data()!['phoneNumber'];
           // password= snapshot.data()!['password'];
           // age = int.parse(snapshot.data()!['age']).toString();
-          // age = snapshot.data()!['age'].toString();
+          ages = snapshot.data()!['age'].toString();
 
           city = snapshot.data()!['city'];
           country = snapshot.data()!['country'];
@@ -305,6 +305,24 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
                               fontWeight: FontWeight.bold),
                         ),
                       ]),
+                      TableRow(children: [
+                        const Text(
+                          "Age:",
+                          style: TextStyle(
+                              color: Colors.red,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          ages,
+                          style: const TextStyle(
+                              color: Colors.red,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ]),
+                      //use this table row to add extra space
+                      const TableRow(children: [Text(""), Text("")]),
                     ],
                   ),
                 ),

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:investorapp/global.dart';
 import 'package:investorapp/models/person.dart';
 
 class ProfileController extends GetxController {
@@ -27,5 +28,53 @@ class ProfileController extends GetxController {
       }
       return userProfileList;
     }));
+  }
+
+  favouriteSentFavouriteRecieved(String toUserId, String senderName) async {
+    //so in easyh words we are checking that user id we want to set favourite is already done favourite by us or
+    // not if we have already done it, it will be shown
+    var document = await FirebaseFirestore.instance
+        .collection("users")
+        .doc(toUserId)
+        .collection("favouriteRecieved")
+        .doc(currentUserId)
+        .get();
+// remove the favourite from database
+    if (document.exists) {
+      //favourite will be removed from the B person or 2nd User
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(toUserId)
+          .collection("favouriteRecieved")
+          .doc(currentUserId)
+          .delete();
+      //favourite will be removed from the A person or 1st User
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(currentUserId)
+          .collection("favouriteSent")
+          .doc(toUserId)
+          .delete();
+    }
+
+    //mark as favourite in database
+
+    else {
+      //favourite will be added to the B person or 2nd User
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(toUserId)
+          .collection("favouriteRecieved")
+          .doc(currentUserId)
+          .set({});
+      //favourite will be added to the A person or 1st User
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(currentUserId)
+          .collection("favouriteSent")
+          .doc(toUserId)
+          .set({});
+    }
+    update();
   }
 }

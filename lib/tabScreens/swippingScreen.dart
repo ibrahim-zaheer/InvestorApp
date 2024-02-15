@@ -41,9 +41,12 @@
 //   }
 // }
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:investorapp/controllers/profile_controller.dart';
+import 'package:investorapp/global.dart';
 
 class SwippingScreen extends StatefulWidget {
   const SwippingScreen({Key? key}) : super(key: key);
@@ -55,6 +58,27 @@ class SwippingScreen extends StatefulWidget {
 class _SwippingScreenState extends State<SwippingScreen> {
   // we write like this to get access to get method we created in profile_controllers under controller folder
   ProfileController profileController = Get.put(ProfileController());
+  String senderName = "";
+//getting data of the current user which means we who are using the app
+  readCurrentUserData() async {
+    await FirebaseFirestore.instance
+        .collection("users")
+        .doc(currentUserId)
+        .get()
+        .then((dataSnapShot) {
+      setState(() {
+        senderName = dataSnapShot.data()!["name"].toString();
+      });
+    });
+  }
+
+// we write this command so ewach time we use application method inside it automatically run
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    readCurrentUserData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -220,7 +244,7 @@ class _SwippingScreenState extends State<SwippingScreen> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  // heart shape
+                                  // heart shape or favourite sent or favourite recieved screen
                                   GestureDetector(
                                     onTap: () {},
                                     child: Image.asset(
@@ -238,7 +262,12 @@ class _SwippingScreenState extends State<SwippingScreen> {
                                   ),
                                   //star shape
                                   GestureDetector(
-                                    onTap: () {},
+                                    onTap: () {
+                                      profileController
+                                          .favouriteSentFavouriteRecieved(
+                                              eachProfileInfo.uid.toString(),
+                                              senderName);
+                                    },
                                     child: Image.asset(
                                       "assets/images/star.png",
                                       width: 50,
