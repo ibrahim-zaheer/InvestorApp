@@ -42,6 +42,7 @@ class _FavouriteSentFavouriteRecievedScreenState
       for (int i = 0; i < favouriteRecieveDocument.docs.length; i++) {
         favouriteRecieveList.add(favouriteRecieveDocument.docs[i].id);
       }
+      print("Favourite Recieve List :" + favouriteRecieveList.toString());
       getKeysDataFromUsersCollection(favouriteRecieveList);
     }
   }
@@ -63,12 +64,23 @@ class _FavouriteSentFavouriteRecievedScreenState
         }
       }
     }
+    setState(() {
+      favouriteList;
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getFavouriteListKeys();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           title: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             TextButton(
               onPressed: () {
@@ -88,10 +100,10 @@ class _FavouriteSentFavouriteRecievedScreenState
               child: Text(
                 "My Favourites",
                 style: TextStyle(
-                    color: isFavouriteSentCLicked ? Colors.white : Colors.grey,
+                    color: isFavouriteSentCLicked ? Colors.grey : Colors.white,
                     fontWeight: isFavouriteSentCLicked
-                        ? FontWeight.bold
-                        : FontWeight.normal,
+                        ? FontWeight.normal
+                        : FontWeight.bold,
                     fontSize: 14),
               ),
             ),
@@ -147,12 +159,58 @@ class _FavouriteSentFavouriteRecievedScreenState
                         child: GestureDetector(
                           onTap: () {},
                           child: DecoratedBox(
-                              decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      image: NetworkImage(
-                                        favouriteList[index]['imageProfile'],
-                                      ),
-                                      fit: BoxFit.cover))),
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: NetworkImage(
+                                      favouriteList[index]['imageProfile'],
+                                    ),
+                                    fit: BoxFit.cover)),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Center(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Spacer(),
+                                    Text(
+                                      "${favouriteList[index]['name']} . ${favouriteList[index]['age']}",
+                                      maxLines: 2,
+                                      style: const TextStyle(
+                                          // we write this code to adjust the screen size in case the text overflows
+                                          //for this we wrap the Text with Expanded widget
+                                          overflow: TextOverflow.ellipsis,
+                                          color: Colors.grey,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    const SizedBox(
+                                      height: 4,
+                                    ),
+                                    Row(
+                                      children: [
+                                        const Icon(
+                                          Icons.location_city_outlined,
+                                          color: Colors.grey,
+                                          size: 16,
+                                        ),
+                                        Expanded(
+                                          child: Text(
+                                            "${favouriteList[index]['city']} . ${favouriteList[index]['country']}",
+                                            maxLines: 2,
+                                            style: const TextStyle(
+                                              overflow: TextOverflow.ellipsis,
+                                              color: Colors.grey,
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ),

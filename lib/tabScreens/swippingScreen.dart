@@ -246,7 +246,11 @@ class _SwippingScreenState extends State<SwippingScreen> {
                                 children: [
                                   // heart shape or favourite sent or favourite recieved screen
                                   GestureDetector(
-                                    onTap: () {},
+                                    onTap: () {
+                                      profileController.likeSentLikeRecieved(
+                                          eachProfileInfo.uid.toString(),
+                                          senderName);
+                                    },
                                     child: Image.asset(
                                       "assets/images/heart.png",
                                       width: 50,

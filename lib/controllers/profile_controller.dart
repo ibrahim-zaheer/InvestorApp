@@ -77,4 +77,53 @@ class ProfileController extends GetxController {
     }
     update();
   }
+
+  //like sent and like recieved
+  likeSentLikeRecieved(String toUserId, String senderName) async {
+    //so in easyh words we are checking that user id we want to set favourite is already done favourite by us or
+    // not if we have already done it, it will be shown
+    var document = await FirebaseFirestore.instance
+        .collection("users")
+        .doc(toUserId)
+        .collection("likeRecieved")
+        .doc(currentUserId)
+        .get();
+// remove the like from database
+    if (document.exists) {
+      //like will be removed from the B person or 2nd User
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(toUserId)
+          .collection("likeRecieved")
+          .doc(currentUserId)
+          .delete();
+      //like will be removed from the A person or 1st User
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(currentUserId)
+          .collection("likeSent")
+          .doc(toUserId)
+          .delete();
+    }
+
+    //mark as like in database
+
+    else {
+      //like will be added to the B person or 2nd User
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(toUserId)
+          .collection("likeRecieved")
+          .doc(currentUserId)
+          .set({});
+      //like will be added to the A person or 1st User
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(currentUserId)
+          .collection("likeSent")
+          .doc(toUserId)
+          .set({});
+    }
+    update();
+  }
 }
