@@ -126,4 +126,41 @@ class ProfileController extends GetxController {
     }
     update();
   }
+
+  //view sent view recieved screen
+
+  viewSentViewRecieved(String toUserId, String senderName) async {
+    //so in easyh words we are checking that user id we want to set view is already done  by us or
+    // not if we have already done it, it will be shown
+    var document = await FirebaseFirestore.instance
+        .collection("users")
+        .doc(toUserId)
+        .collection("viewRecieved")
+        .doc(currentUserId)
+        .get();
+// since view will happen when we view someone's profile while swipping
+    if (document.exists) {
+      print("Already in view list");
+    }
+
+    //mark as like in database
+
+    else {
+      //like will be added to the B person or 2nd User
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(toUserId)
+          .collection("viewRecieved")
+          .doc(currentUserId)
+          .set({});
+      //like will be added to the A person or 1st User
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(currentUserId)
+          .collection("viewSent")
+          .doc(toUserId)
+          .set({});
+    }
+    update();
+  }
 }

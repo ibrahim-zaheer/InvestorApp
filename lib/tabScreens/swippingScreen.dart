@@ -47,6 +47,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:investorapp/controllers/profile_controller.dart';
 import 'package:investorapp/global.dart';
+import 'package:investorapp/tabScreens/user_detail_screen.dart';
 
 class SwippingScreen extends StatefulWidget {
   const SwippingScreen({Key? key}) : super(key: key);
@@ -129,7 +130,14 @@ class _SwippingScreenState extends State<SwippingScreen> {
                       //we write this to move the data to bottom of the image
                       const Spacer(),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          // we write this code so that when user click on someone's profile we take it to someones detail screen
+                          profileController.viewSentViewRecieved(
+                              eachProfileInfo.uid.toString(), senderName);
+                          Get.to(UserDetailScreen(
+                            userID: eachProfileInfo.uid.toString(),
+                          ));
+                        },
                         child: Column(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
