@@ -21,14 +21,14 @@ class _LikeSentLikeRecievedScreenState
   //favourite sent screen
   getLikeListKeys() async {
     if (isLikeSentCLicked) {
-      var favouriteSentDocument = await FirebaseFirestore.instance
+      var likeSentDocument = await FirebaseFirestore.instance
           .collection("users")
           .doc(currentUserId)
           .collection("likeSent")
           .get();
 //  then we write this code to store id  values of subcollection in the list
-      for (int i = 0; i < favouriteSentDocument.docs.length; i++) {
-        likeSentList.add(favouriteSentDocument.docs[i].id);
+      for (int i = 0; i < likeSentDocument.docs.length; i++) {
+        likeSentList.add(likeSentDocument.docs[i].id);
       }
       getKeysDataFromUsersCollection(likeSentList);
     } else {
