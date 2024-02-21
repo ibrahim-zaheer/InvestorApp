@@ -3,6 +3,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_image_slider/carousel.dart';
+import 'package:get/get.dart';
+import 'package:investorapp/accountSettingScreen/account_setting_screen.dart';
+import 'package:investorapp/global.dart';
 
 // ignore: must_be_immutable
 class UserDetailScreen extends StatefulWidget {
@@ -136,16 +139,44 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
           centerTitle: true,
           // for setting the default backward button to disappear
           automaticallyImplyLeading: false,
+          //we are using this code so the option to go back only appears for current user
+          leading: widget.userID != currentUserId
+              ? IconButton(
+                  onPressed: () {
+                    Get.back();
+                  },
+                  icon: (const Icon(
+                    Icons.arrow_back,
+                    size: 30,
+                  )))
+              : Container(),
           actions: [
-            IconButton(
-              onPressed: () {
-                FirebaseAuth.instance.signOut();
-              },
-              icon: const Icon(
-                Icons.logout,
-                size: 30,
-              ),
-            ),
+            widget.userID != currentUserId
+                ? Row(
+                    children: [
+                      //for account settings
+                      IconButton(
+                        onPressed: () {
+                          Get.to(const accountSettingScreen());
+                        },
+                        icon: const Icon(
+                          Icons.settings,
+                          size: 30,
+                        ),
+                      ),
+                      //for log out
+                      IconButton(
+                        onPressed: () {
+                          FirebaseAuth.instance.signOut();
+                        },
+                        icon: const Icon(
+                          Icons.logout,
+                          size: 30,
+                        ),
+                      ),
+                    ],
+                  )
+                : Container(),
           ],
         ),
         body: SingleChildScrollView(
