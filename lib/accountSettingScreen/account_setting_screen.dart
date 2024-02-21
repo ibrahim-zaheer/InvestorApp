@@ -22,10 +22,25 @@ class _accountSettingScreenState extends State<accountSettingScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
+          //if the next button is clicked then that means user slected the images or
+          // displaying 5 images will be shown
           next ? "Profile Information" : "Choose 5 Images",
-          style: TextStyle(color: Colors.white, fontSize: 22),
+          style: const TextStyle(color: Colors.white, fontSize: 22),
         ),
+        actions: [
+          //if the next button is clicked then that means user slected the images or
+          // displaying 5 images will be shown
+          next
+              ? Container()
+              : IconButton(
+                  onPressed: () {},
+                  icon: const Icon(
+                    Icons.navigate_next_outlined,
+                    size: 36,
+                  ))
+        ],
       ),
+      body: next ? const SingleChildScrollView() : const Stack(),
     );
   }
 }
