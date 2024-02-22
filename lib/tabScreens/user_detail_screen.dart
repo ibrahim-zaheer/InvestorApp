@@ -151,7 +151,7 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
                   )))
               : Container(),
           actions: [
-            widget.userID != currentUserId
+            widget.userID == currentUserId
                 ? Row(
                     children: [
                       //for account settings
