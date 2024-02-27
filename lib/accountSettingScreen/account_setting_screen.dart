@@ -6,6 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:investorapp/global.dart';
+import 'package:investorapp/homseScreen/home_screen.dart';
 import 'package:investorapp/widget/custom_text_field_widget.dart';
 import 'package:investorapp/components/text_Editing_controllers.dart';
 import 'package:investorapp/controllers/authentication_controller.dart';
@@ -62,35 +63,37 @@ class _accountSettingScreenState extends State<accountSettingScreen> {
   TextEditingController religion = TextEditingController();
   TextEditingController ethnicity = TextEditingController();
 
-  //then for aassinging  the old data to variable we will add:
-  String _email = "";
-  String _imageProfile = "";
-  String _name = "";
-  String _phoneNumber = "";
-  String _age = "";
-  String _city = "";
-  String _country = "";
-  String _lookingForInAPartner = "";
-  String _profileHeading = "";
-  String _publishedDateTime = "";
-  String _height = "";
-  String _weight = "";
-  String _bodyType = "";
-  String _drink = "";
-  String _smoke = "";
-  String _maritalStatus = "";
-  String _haveChildren = "";
-  String _numberOfChildren = "";
-  String _profession = "";
-  String _income = "";
-  String _livingSituation = "";
-  String _willingToRelocate = "";
-  String _relationshipYouAreLookingFor = "";
-  String _nationality = "";
-  String _education = "";
-  String _language = "";
-  String _religion = "";
-  String _ethnicity = "";
+  TextEditingControllers usercontrollers = TextEditingControllers();
+
+  // //then for aassinging  the old data to variable we will add:
+  // String _email = "";
+  // String _imageProfile = "";
+  // String _name = "";
+  // String _phoneNumber = "";
+  // String _age = "";
+  // String _city = "";
+  // String _country = "";
+  // String _lookingForInAPartner = "";
+  // String _profileHeading = "";
+  // String _publishedDateTime = "";
+  // String _height = "";
+  // String _weight = "";
+  // String _bodyType = "";
+  // String _drink = "";
+  // String _smoke = "";
+  // String _maritalStatus = "";
+  // String _haveChildren = "";
+  // String _numberOfChildren = "";
+  // String _profession = "";
+  // String _income = "";
+  // String _livingSituation = "";
+  // String _willingToRelocate = "";
+  // String _relationshipYouAreLookingFor = "";
+  // String _nationality = "";
+  // String _education = "";
+  // String _language = "";
+  // String _religion = "";
+  // String _ethnicity = "";
   String ages = "";
   String profileHeading = "";
 
@@ -138,10 +141,15 @@ class _accountSettingScreenState extends State<accountSettingScreen> {
       // then we are checking that if user is applying to update does it exist or not
       if (snapshot.exists) {
         setState(() {
+          // then assign each value to controller so that we can display it
           name = snapshot.data()!['name'];
+          usercontrollers.name.text = name as String;
+
           // imageProfile= snapshot.data()!['imageProfile'];
           email = snapshot.data()!['email'];
+          usercontrollers.email.text = email as String;
           phoneNumber = snapshot.data()!['phoneNumber'];
+          usercontrollers.phoneNumber.text = phoneNumber.toString();
           // password= snapshot.data()!['password'];
           // age = int.parse(snapshot.data()!['age']).toString();
           ages = snapshot.data()!['age'].toString();
@@ -222,7 +230,10 @@ class _accountSettingScreenState extends State<accountSettingScreen> {
           ));
         });
     await uploadImage();
-    FirebaseFirestore.instance.collection("users").doc(currentUserId).update({
+    await FirebaseFirestore.instance
+        .collection("users")
+        .doc(currentUserId)
+        .update({
       "name": name,
       "phoneNumber": phoneNumber,
       "age": int.parse(age),
@@ -249,6 +260,20 @@ class _accountSettingScreenState extends State<accountSettingScreen> {
       "language": language,
       "religion": religion,
       "ethnicity": ethnicity,
+      //Images
+      'urlImage1': urlList[0].toString(),
+      'urlImage2': urlList[1].toString(),
+      'urlImage3': urlList[2].toString(),
+      'urlImage4': urlList[3].toString(),
+      'urlImage5': urlList[4].toString(),
+    });
+    Get.snackbar(
+        'Update Successful', "Your account has been updated successfully");
+    Get.to(HomeScreen());
+    setState(() {
+      uploading = false;
+      _image.clear();
+      urlList.clear();
     });
   }
 
@@ -261,7 +286,6 @@ class _accountSettingScreenState extends State<accountSettingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    TextEditingControllers usercontrollers = TextEditingControllers();
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -277,20 +301,29 @@ class _accountSettingScreenState extends State<accountSettingScreen> {
               ? Container()
               : IconButton(
                   onPressed: () {
-                    showDialog(
-                        context: context,
-                        builder: (context) {
-                          return const Center(
-                              child: Column(
-                            children: [
-                              CircularProgressIndicator(),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Text("Uploading Images....")
-                            ],
-                          ));
-                        });
+                    if (_image.length == 5) {
+                      setState(() {
+                        uploading = true;
+                        next = true;
+                      });
+                    } else {
+                      Get.snackbar(
+                          "5 images", "only upto 5 images can be selected");
+                    }
+                    // showDialog(
+                    //     context: context,
+                    //     builder: (context) {
+                    //       return const Center(
+                    //           child: Column(
+                    //         children: [
+                    //           CircularProgressIndicator(),
+                    //           SizedBox(
+                    //             height: 10,
+                    //           ),
+                    //           Text("Uploading Images....")
+                    //         ],
+                    //       ));
+                    //     });
                     uploadImage();
                   },
                   icon: const Icon(
@@ -650,36 +683,40 @@ class _accountSettingScreenState extends State<accountSettingScreen> {
                       child: InkWell(
                         onTap: () async {
                           if (usercontrollers.name.text.trim().isNotEmpty) {
-                            await updateUserDataToFireStoreDatabase(
-                                usercontrollers.name.text.trim(),
-                                usercontrollers.phoneNumber.text.trim(),
-                                usercontrollers.age.text.trim(),
-                                usercontrollers.city.text.trim(),
-                                usercontrollers.country.text.trim(),
-                                usercontrollers.lookingForInAPartner.text
-                                    .trim(),
-                                usercontrollers.ProfileHeading.text.trim(),
-                                // DateTime.now(),
-                                usercontrollers.height.text.trim(),
-                                usercontrollers.weight.text.trim(),
-                                usercontrollers.bodyType.text.trim(),
-                                usercontrollers.drink.text.trim(),
-                                usercontrollers.smoke.text.trim(),
-                                usercontrollers.maritalStatus.text.trim(),
-                                usercontrollers.haveChildren.text.trim(),
-                                usercontrollers.numberOfChildren.text.trim(),
-                                usercontrollers.profession.text.trim(),
-                                usercontrollers.income.text.trim(),
-                                usercontrollers.livingSituation.text.trim(),
-                                usercontrollers.willingToRelocate.text.trim(),
-                                usercontrollers
-                                    .relationshipYouAreLookingFor.text
-                                    .trim(),
-                                usercontrollers.nationality.text.trim(),
-                                usercontrollers.education.text.trim(),
-                                usercontrollers.language.text.trim(),
-                                usercontrollers.religion.text.trim(),
-                                usercontrollers.ethnicity.text.trim());
+                            _image.length > 0
+                                ? await updateUserDataToFireStoreDatabase(
+                                    usercontrollers.name.text.trim(),
+                                    usercontrollers.phoneNumber.text.trim(),
+                                    usercontrollers.age.text.trim(),
+                                    usercontrollers.city.text.trim(),
+                                    usercontrollers.country.text.trim(),
+                                    usercontrollers.lookingForInAPartner.text
+                                        .trim(),
+                                    usercontrollers.ProfileHeading.text.trim(),
+                                    // DateTime.now(),
+                                    usercontrollers.height.text.trim(),
+                                    usercontrollers.weight.text.trim(),
+                                    usercontrollers.bodyType.text.trim(),
+                                    usercontrollers.drink.text.trim(),
+                                    usercontrollers.smoke.text.trim(),
+                                    usercontrollers.maritalStatus.text.trim(),
+                                    usercontrollers.haveChildren.text.trim(),
+                                    usercontrollers.numberOfChildren.text
+                                        .trim(),
+                                    usercontrollers.profession.text.trim(),
+                                    usercontrollers.income.text.trim(),
+                                    usercontrollers.livingSituation.text.trim(),
+                                    usercontrollers.willingToRelocate.text
+                                        .trim(),
+                                    usercontrollers
+                                        .relationshipYouAreLookingFor.text
+                                        .trim(),
+                                    usercontrollers.nationality.text.trim(),
+                                    usercontrollers.education.text.trim(),
+                                    usercontrollers.language.text.trim(),
+                                    usercontrollers.religion.text.trim(),
+                                    usercontrollers.ethnicity.text.trim())
+                                : null;
                           } else {
                             Get.snackbar("A field is Missing",
                                 "Please enter the field again");
@@ -719,7 +756,16 @@ class _accountSettingScreenState extends State<accountSettingScreen> {
                                 child: IconButton(
                                     // means if images are uploading user will not be allowed to insert further images
                                     onPressed: () {
-                                      !uploading ? chooseImage() : null;
+                                      // means images cannot be more than 5
+                                      if (_image.length < 5) {
+                                        !uploading ? chooseImage() : null;
+                                      } else {
+                                        setState(() {
+                                          uploading = true;
+                                        });
+                                        Get.snackbar("all images full",
+                                            "all 5 images are  selected");
+                                      }
                                     },
                                     icon: const Icon(Icons.add)),
                               ),
